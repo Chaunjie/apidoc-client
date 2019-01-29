@@ -21,7 +21,8 @@ html, body{
 }
 .main-page{
   width: 100%;
-  min-height: 100%;
+  height: 100%;
+  overflow: hidden;
   display: flex;
 }
 #nav {

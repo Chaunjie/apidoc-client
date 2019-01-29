@@ -1,7 +1,7 @@
 <template>
   <div class="layout-page">
     <el-row class="admin-row">
-      <el-col :span="4" style="background-color: #324057;">
+      <el-col :span="4" style="background-color: #324057;overflow-y:scroll;">
         <el-menu class="el-menu-dark"
           ref="menuRef"
           :default-active="defaultActive"
@@ -25,8 +25,10 @@
       <el-col :span="20" style="height: 100%;overflow: auto;">
         <Header :active-path="defaultActive" @change="handleChange"/>
         <keep-alive>
-          <div class="padding-container">
-            <router-view></router-view>
+          <div class="content-view">
+            <div class="padding-container">
+              <router-view></router-view>
+            </div>
           </div>
         </keep-alive>
       </el-col>
@@ -128,5 +130,9 @@ export default {
   }
   .padding-container {
     padding: 20px 50px;
+  }
+  .content-view {
+    height: ~"calc(100% - 61px)";
+    overflow-y: scroll;
   }
 </style>
