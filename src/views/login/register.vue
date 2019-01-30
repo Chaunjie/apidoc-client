@@ -1,8 +1,6 @@
 <template>
   <div class="login-container">
-
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-
       <div class="title-container">
         <h3 class="title">{{ login.title }}</h3>
       </div>
@@ -23,64 +21,111 @@
           v-model="loginForm.password"
           :placeholder="login.password"
           name="password"
-          auto-complete="on"
-          @keyup.enter.native="handleLogin" />
+          auto-complete="on" />
+      </el-form-item>
+      <el-form-item prop="comfirmPwd">
+        <el-input
+          :type="passwordType"
+          v-model="loginForm.comfirmPwd"
+          :placeholder="login.comfirmPwd"
+          name="comfirmPwd"
+          auto-complete="on"/>
+      </el-form-item>
+      <el-form-item prop="companyname">
+        <el-input
+          type="text"
+          v-model="loginForm.companyname"
+          :placeholder="login.companyName"
+          name="companyname"
+          auto-complete="on"/>
+      </el-form-item>
+      <el-form-item prop="code" class="code-item">
+        <el-input
+          class="code-input"
+          type="text"
+          v-model="loginForm.code"
+          :placeholder="login.validateTip"
+          name="code"
+          auto-complete="on" />
+        <div v-html="checkInfo.img" class="code-view"></div>
       </el-form-item>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ login.logIn }}</el-button>
-      <p class="regist-btn" @click="toRegister">前往注册</p>
     </el-form>
-
-    <el-dialog :title="login.thirdparty" :visible.sync="showDialog">
-      {{ login.thirdpartyTips }}
-      <br>
-      <br>
-      <br>
-    </el-dialog>
-
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 
 export default {
   data () {
     const validateUsername = (rule, value, callback) => {
       if (value.length < 1) {
-        callback(new Error('Please enter the correct user name'))
+        callback(new Error('请输入有效的用户名'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        callback(new Error('密码必须是6-16位'))
+      } else {
+        callback()
+      }
+    }
+    const validatePwdConfirm = (rule, value, callback) => {
+      if (value.length < 6 || value !== this.loginForm.password) {
+        callback(new Error('两次密码输入不一致'))
+      } else {
+        callback()
+      }
+    }
+    const validateCompanyName = (rule, value, callback) => {
+      if (value.length < 1) {
+        callback(new Error('请输入有效的公司名称'))
+      } else {
+        callback()
+      }
+    }
+    const doValCode = (rule, value, callback) => {
+      if (value.length < 1) {
+        callback(new Error('请输入有效的验证码'))
       } else {
         callback()
       }
     }
     return {
       login: {
-        title: '登录',
-        username: '用户名',
+        title: '注册',
+        username: '用户名(6-16位英文、数字、符号)',
         password: '密码',
-        logIn: '登录',
-        any: '123456',
-        thirdparty: '三方登录',
-        thirdpartyTips: '三方登录提示'
+        comfirmPwd: '确认密码',
+        companyName: '公司名称',
+        validateTip: '验证码',
+        logIn: '注册'
       },
       loginForm: {
         username: '',
-        password: ''
+        password: '',
+        comfirmPwd: '',
+        companyname: '',
+        code: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+        comfirmPwd: [{ required: true, trigger: 'blur', validator: validatePwdConfirm }],
+        companyname: [{ required: true, trigger: 'blur', validator: validateCompanyName }],
+        code: [{ required: true, trigger: 'blur', validator: doValCode }]
       },
       passwordType: 'password',
       loading: false,
       showDialog: false,
       redirect: undefined
     }
+  },
+  computed: {
+    ...mapGetters(['checkInfo'])
   },
   watch: {
     $route: {
@@ -91,15 +136,9 @@ export default {
     }
   },
   created () {
-    // window.addEventListener('hashchange', this.afterQRScan)
-  },
-  destroyed () {
-    // window.removeEventListener('hashchange', this.afterQRScan)
+    this.$store.dispatch('getCheck').then(() => {}).catch(() => {})
   },
   methods: {
-    toRegister () {
-      this.$router.push({ path: '/register' })
-    },
     showPwd () {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -109,19 +148,13 @@ export default {
     },
     handleLogin () {
       this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true
-          this.$store.dispatch('loginByUsername', this.loginForm).then(() => {
-            this.loading = false
-            this.$router.push({ path: '/' })
-          }).catch(() => {
-            this.loading = false
-            this.$message.error('登录失败了哦, 请检查下账号密码!')
-          })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
+        const { comfirmPwd, ...submitData } = this.loginForm
+        this.$store.dispatch('registerUser', submitData).then(() => {
+          console.log('succcess')
+          this.$router.push({ path: '/login' })
+        }).catch(() => {
+          console.log('error')
+        })
       })
     }
   }
@@ -235,11 +268,21 @@ export default {
     right: 0;
     bottom: 6px;
   }
-  .regist-btn {
-    text-align: right;
-    color: #fff;
-    cursor: pointer;
-    margin-top: 0;
-  }
 }
+.code-input .el-form-item__content {
+  flex: 1;
+}
+.code-view {
+  display: inline-block;
+  width: 150px;
+  height: 44px;
+  background-color: #fff;
+}
+</style>
+<style lang="less">
+  .code-item > .el-form-item__content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 </style>

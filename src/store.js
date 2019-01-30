@@ -17,7 +17,8 @@ export default new Vuex.Store({
     allProjectList: [],
     tagList: [],
     menuList: [],
-    apiInfo: {}
+    apiInfo: {},
+    checkInfo: {}
   },
   mutations: {
     updateUser (state, item) {
@@ -40,6 +41,9 @@ export default new Vuex.Store({
     },
     updateApi (state, item) {
       state.apiInfo = item
+    },
+    updateCheck (state, item) {
+      state.checkInfo = item
     }
   },
   getters: {
@@ -49,7 +53,8 @@ export default new Vuex.Store({
     allProjectList: state => state.allProjectList,
     tagList: state => state.tagList,
     menuList: state => state.menuList,
-    apiInfo: state => state.apiInfo
+    apiInfo: state => state.apiInfo,
+    checkInfo: state => state.checkInfo
   },
   actions: {
     // 用户相关
@@ -94,6 +99,17 @@ export default new Vuex.Store({
     addUser (context, item) {
       return new Promise((resolve, reject) => {
         api.addUser(item).then(res => {
+          if (res.code === 200) {
+            resolve()
+          } else {
+            reject()
+          }
+        })
+      })
+    },
+    registerUser (context, item) {
+      return new Promise((resolve, reject) => {
+        api.registerUser(item).then(res => {
           if (res.code === 200) {
             resolve()
           } else {
@@ -286,6 +302,31 @@ export default new Vuex.Store({
           } else {
             reject()
           }
+        })
+      })
+    },
+    // 校验相关
+    getCheck (context, item) {
+      return new Promise((resolve, reject) => {
+        api.getCheck(item).then(res => {
+          if (res.code === 200) {
+            const data = {
+              img: res.img
+            }
+            context.commit('updateCheck', data)
+            resolve()
+          } else {
+            reject()
+          }
+        })
+      })
+    },
+    doCheck (context, item) {
+      return new Promise((resolve, reject) => {
+        api.doCheck(item).then(res => {
+          console.log(`success: ${res}`)
+        }).catch(res => {
+          console.log(`error: ${res}`)
         })
       })
     }

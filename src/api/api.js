@@ -1,4 +1,5 @@
 import axios from 'axios'
+axios.defaults.withCredentials = true
 
 let base = ''
 if (process.env.NODE_ENV === 'production') {
@@ -10,6 +11,7 @@ if (process.env.NODE_ENV === 'production') {
 // 用户相关
 export const requestLogin = params => { return axios.post(`${base}/user/login`, params).then(res => res.data) }
 export const addUser = params => { return axios.post(`${base}/user/add`, params).then(res => res.data) }
+export const registerUser = params => { return axios.post(`${base}/user/register`, params).then(res => res.data) }
 export const updateUser = params => { return axios.post(`${base}/user/update`, params).then(res => res.data) }
 export const getUserList = params => { return axios.get(`${base}/user/list`, params).then(res => res.data) }
 export const delUser = params => { return axios.delete(`${base}/user/delete`, params).then(res => res.data) }
@@ -30,3 +32,6 @@ export const addApi = params => { return axios.post(`${base}/api/add`, params).t
 export const updateApi = params => { return axios.post(`${base}/api/update`, params).then(res => res.data) }
 export const delApi = params => { return axios.delete(`${base}/api/delete`, params).then(res => res.data) }
 export const getApi = params => { return axios.get(`${base}/api/get`, params).then(res => res.data) }
+// 验证相关
+export const getCheck = params => { return axios.get(`${base}/check/get`, params).then(res => res.data) }
+export const doCheck = params => { return axios.post(`${base}/check/check`, params).then(res => res.data) }

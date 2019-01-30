@@ -48,6 +48,11 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "login" */'./views/login/index.vue')
     },
     {
+      path: '/register',
+      name: 'register',
+      component: () => import(/* webpackChunkName: "register" */'./views/login/register.vue')
+    },
+    {
       path: '/project',
       name: 'project',
       component: () => import(/* webpackChunkName: "project" */'./views/project/index.vue')
@@ -71,8 +76,12 @@ router.beforeEach((to, from, next) => {
     // sessionStorage.removeItem('user');
   }
   let user = Cookies.get('userInfo')
-  if (!user && to.path !== '/login') {
-    next({ path: '/login' })
+  if (!user) {
+    if (to.path === '/login' || to.path === '/register' || to.path === '/401' || to.path === '/404') {
+      next()
+    } else {
+      next({ path: '/login' })
+    }
   } else {
     next()
   }
