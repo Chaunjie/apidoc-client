@@ -9,7 +9,7 @@
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="project">项目列表</el-dropdown-item>
           <el-dropdown-item command="userList">用户列表</el-dropdown-item>
-          <el-dropdown-item command="login" divided>退出登录</el-dropdown-item>
+          <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </li>
@@ -53,8 +53,10 @@ export default {
       this.$emit('change')
       if (command === 'logout') {
         util.removeCookie('userInfo')
+        this.$router.push({ name: '/login' })
+      } else {
+        this.$router.push({ name: command })
       }
-      this.$router.push({ name: command })
     }
   },
   created () {},

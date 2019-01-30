@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from '@/views/layout/index.vue'
-import Cookies from 'js-cookie'
+import { util } from '@/utils'
 
 Vue.use(Router)
 
@@ -75,7 +75,7 @@ router.beforeEach((to, from, next) => {
   if (to.path === '/login') {
     // sessionStorage.removeItem('user');
   }
-  let user = Cookies.get('userInfo')
+  let user = util.getCookie('userInfo')
   if (!user) {
     if (to.path === '/login' || to.path === '/register' || to.path === '/401' || to.path === '/404') {
       next()
