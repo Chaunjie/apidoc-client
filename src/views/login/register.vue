@@ -152,8 +152,8 @@ export default {
         this.$store.dispatch('registerUser', submitData).then(() => {
           console.log('succcess')
           this.$router.push({ path: '/login' })
-        }).catch(() => {
-          console.log('error')
+        }).catch(res => {
+          this.$message.error(res.message)
         })
       })
     }

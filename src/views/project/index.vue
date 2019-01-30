@@ -35,7 +35,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import Cookies from 'js-cookie'
+import { util } from '@/utils'
 
 export default {
   name: 'project',
@@ -50,7 +50,7 @@ export default {
   methods: {
     handleCommand (command) {
       if (command === 'logout') {
-        Cookies.remove('userInfo', { path: '' })
+        util.removeCookie('userInfo')
         this.$router.push({ name: 'login' })
       }
     },
@@ -113,11 +113,8 @@ export default {
     }
   },
   mounted () {
-    const userStr = Cookies.get('userInfo')
-    if (userStr) {
-      this.userInfo = JSON.parse(userStr)
-      this.$store.dispatch('getProjectList', { params: { userid: this.userInfo.userId } })
-    }
+    this.userInfo = util.getCookie('userInfo')
+    this.$store.dispatch('getProjectList', { params: { userid: this.userInfo.userId } })
   }
 }
 </script>

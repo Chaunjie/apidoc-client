@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import api from './api'
-import Cookies from 'js-cookie'
+import { util } from './utils'
 // import User from './store/user'
 
 Vue.use(Vuex)
@@ -65,7 +65,8 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         api.requestLogin(item).then(res => {
           if (res.code === 200) {
-            Cookies.set('userInfo', res.data, { expires: 3 })
+            util.setCookie('userInfo', res.data)
+            console.log(util.getCookie('userInfo'))
             resolve()
           } else {
             reject()
@@ -113,7 +114,7 @@ export default new Vuex.Store({
           if (res.code === 200) {
             resolve()
           } else {
-            reject()
+            reject(res)
           }
         })
       })

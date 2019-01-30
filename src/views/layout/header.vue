@@ -1,7 +1,6 @@
 <template>
   <ul role="menubar" class="el-menu-demo el-menu--horizontal el-menu">
-    <li :class="['el-menu-item', activePath === '/tag/list' ? 'is-active' : '']" @click="handleSelect('list')">标签列表</li>
-    <li :class="['el-menu-item', isActive ? 'is-active' : '']" @click="handleSelect('add')">新增API</li>
+    <li class="el-menu-item">{{userInfo.companyName}}</li>
     <li class="right-menu">
       <el-dropdown @command="handleCommand" class="user-dropdown">
         <span class="el-dropdown-link">
@@ -14,10 +13,12 @@
         </el-dropdown-menu>
       </el-dropdown>
     </li>
+    <li :class="['el-menu-item pull-right', isActive ? 'is-active' : '']" @click="handleSelect('add')">新增API</li>
+    <li :class="['el-menu-item pull-right', activePath === '/tag/list' ? 'is-active' : '']" @click="handleSelect('list')">标签列表</li>
   </ul>
 </template>
 <script>
-import Cookies from 'js-cookie'
+import { util } from '@/utils'
 
 export default {
   name: 'k-header',
@@ -51,17 +52,15 @@ export default {
     handleCommand (command) {
       this.$emit('change')
       if (command === 'logout') {
-        Cookies.remove('userInfo', { path: '' })
+        util.removeCookie('userInfo')
       }
       this.$router.push({ name: command })
     }
   },
   created () {},
   mounted () {
-    const userStr = Cookies.get('userInfo')
-    if (userStr) {
-      this.userInfo = JSON.parse(userStr)
-    }
+    console.log(util.getCookie('userInfo'))
+    this.userInfo = util.getCookie('userInfo')
   }
 }
 </script>
@@ -87,13 +86,6 @@ export default {
       align-items: center;
     }
   }
-  .right-menu {
-    float: right;
-    height: 60px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
   .user-dropdown{
     margin-right: 20px;
     .el-dropdown-link{
@@ -102,5 +94,16 @@ export default {
   }
   .el-dropdown-menu__item{
     text-align: center;
+  }
+  .pull-right {
+    float: right !important;
+  }
+  .right-menu {
+    float: right;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 60px;
   }
 </style>
