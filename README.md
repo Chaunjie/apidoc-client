@@ -1,5 +1,5 @@
 # apidoc-client
-vue2.0+element
+vue2.0+element.
 
 ## Project setup
 ```
