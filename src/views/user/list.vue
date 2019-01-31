@@ -46,7 +46,7 @@
       </el-table-column>
     </el-table>
     <!-- 新增/编辑用户表单 -->
-    <el-dialog class="custom-dialog" title="编辑管理员" center :visible.sync="dialogFormVisible">
+    <el-dialog class="custom-dialog" title="编辑管理员" center :visible.sync="dialogFormVisible" v-if="userInfo.role === 1">
       <el-form :model="form">
         <el-form-item label="用户名称" :label-width="formLabelWidth">
           <el-input class="form-input" v-model="form.username" autocomplete="off"></el-input>
@@ -150,15 +150,16 @@ export default {
         /* eslint-enable */
       } else {
         const { userid, ...noId } = this.form
+        const companyInfo = { companyid: this.userInfo.companyId, userid: this.userInfo.userId }
         /* eslint-disable */
-        this.$store.dispatch('addUser', noId)
+        this.$store.dispatch('addUser', { ...noId, ...companyInfo })
         .then(() => {
           this.$message({
             type: 'success',
             message: '新增成功'
           })
           this.dialogFormVisible = false
-          this.$store.dispatch('getUserList', { params: { userid: this.userInfo.userId } })
+          this.$store.dispatch('getUserList', { params: { userid: this.userInfo.userId, companyid: this.userInfo.companyId } })
         })
         .catch(() => {
           this.$message.error('新增失败')
@@ -192,13 +193,13 @@ export default {
         center: true
       }).then(() => {
         /* eslint-disable */
-        this.$store.dispatch('delUser', {params: {userid: row.userId}})
+        this.$store.dispatch('delUser', {params: {userid: row.userId, adminid: this.userInfo.userId}})
         .then(() => {
           this.$message({
             type: 'success',
             message: '删除成功'
           })
-          this.$store.dispatch('getUserList', { params: { userid: this.userInfo.userId } })
+          this.$store.dispatch('getUserList', { params: { userid: this.userInfo.userId, companyid: this.userInfo.companyId } })
         })
         .catch(() => {
           this.$message.error('删除失败')
@@ -214,7 +215,11 @@ export default {
   },
   mounted () {
     this.userInfo = util.getCookie('userInfo')
-    this.$store.dispatch('getUserList', { params: { userid: this.userInfo.userId } })
+    if (this.userInfo.role !== 1) {
+      this.$router.back()
+      return
+    }
+    this.$store.dispatch('getUserList', { params: { userid: this.userInfo.userId, companyid: this.userInfo.companyId } })
   }
 }
 </script>

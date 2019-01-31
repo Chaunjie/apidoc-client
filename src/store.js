@@ -74,6 +74,19 @@ export default new Vuex.Store({
         })
       })
     },
+    updatePwd (context, item) {
+      return new Promise((resolve, reject) => {
+        api.updatePwd(item).then(res => {
+          if (res.code === 200) {
+            resolve()
+          } else {
+            reject(res)
+          }
+        }).catch(res => {
+          reject(res)
+        })
+      })
+    },
     getUserList (context, item) {
       return new Promise((resolve, reject) => {
         api.getUserList(item).then(res => {

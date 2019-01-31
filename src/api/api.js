@@ -15,6 +15,7 @@ export const registerUser = params => { return axios.post(`${base}/user/register
 export const updateUser = params => { return axios.post(`${base}/user/update`, params).then(res => res.data) }
 export const getUserList = params => { return axios.get(`${base}/user/list`, params).then(res => res.data) }
 export const delUser = params => { return axios.delete(`${base}/user/delete`, params).then(res => res.data) }
+export const updatePwd = params => { return axios.post(`${base}/user/updatepwd`, params).then(res => res.data) }
 // 项目相关
 export const getProject = params => { return axios.get(`${base}/project/list`, params).then(res => res.data) }
 export const getProjectCheck = params => { return axios.get(`${base}/project/querylist`, params).then(res => res.data) }

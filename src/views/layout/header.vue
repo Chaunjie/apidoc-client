@@ -8,7 +8,8 @@
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="project">项目列表</el-dropdown-item>
-          <el-dropdown-item command="userList">用户列表</el-dropdown-item>
+          <el-dropdown-item command="reset">修改密码</el-dropdown-item>
+          <el-dropdown-item command="userList" v-if="userInfo.role === 1">用户列表</el-dropdown-item>
           <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -53,7 +54,7 @@ export default {
       this.$emit('change')
       if (command === 'logout') {
         util.removeCookie('userInfo')
-        this.$router.push({ name: '/login' })
+        this.$router.push({ name: 'login' })
       } else {
         this.$router.push({ name: command })
       }
@@ -61,7 +62,6 @@ export default {
   },
   created () {},
   mounted () {
-    console.log(util.getCookie('userInfo'))
     this.userInfo = util.getCookie('userInfo')
   }
 }

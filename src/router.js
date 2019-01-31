@@ -39,6 +39,11 @@ const router = new Router({
           path: '/api/add/:id',
           name: 'apiAdd',
           component: () => import(/* webpackChunkName: "apiadd" */'./views/api/add.vue')
+        },
+        {
+          path: '/reset',
+          name: 'reset',
+          component: () => import(/* webpackChunkName: "reset" */'./views/login/reset.vue')
         }
       ]
     },
