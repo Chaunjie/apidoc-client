@@ -174,7 +174,7 @@ export default {
         spinner: 'el-icon-loading',
         background: 'rgba(0, 0, 0, 0.7)'
       })
-      this.$store.dispatch('getProjectCheck', { params: { userid: row.userId } })
+      this.$store.dispatch('getProjectCheck', { params: { userid: row.userId, companyid: this.userInfo.companyId } })
       .then(res => {
         loading.close()
         this.checkList = res

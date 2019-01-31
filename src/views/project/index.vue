@@ -62,7 +62,7 @@ export default {
         inputErrorMessage: '项目名不能为空'
       }).then(({ value }) => {
         /* eslint-disable */
-        this.$store.dispatch('addProject', {projectname: value, userid: this.userInfo.userId})
+        this.$store.dispatch('addProject', {projectname: value, userid: this.userInfo.userId, companyid: this.userInfo.companyId})
         .then(() => {
           this.$message({
             type: 'success',
