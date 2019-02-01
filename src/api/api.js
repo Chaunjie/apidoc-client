@@ -35,4 +35,3 @@ export const delApi = params => { return axios.delete(`${base}/api/delete`, para
 export const getApi = params => { return axios.get(`${base}/api/get`, params).then(res => res.data) }
 // 验证相关
 export const getCheck = params => { return axios.get(`${base}/check/get`, params).then(res => res.data) }
-export const doCheck = params => { return axios.post(`${base}/check/check`, params).then(res => res.data) }
