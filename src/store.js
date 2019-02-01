@@ -212,6 +212,17 @@ export default new Vuex.Store({
         })
       })
     },
+    updateProject (context, item) {
+      return new Promise((resolve, reject) => {
+        api.updateProject(item).then(res => {
+          if (res.code === 200) {
+            resolve()
+          } else {
+            reject()
+          }
+        })
+      })
+    },
     delProject (context, item) {
       return new Promise((resolve, reject) => {
         api.delProject(item).then(res => {

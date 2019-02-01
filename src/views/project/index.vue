@@ -22,6 +22,7 @@
           <div class="overflow">
             <div class="overflow-body">
               <i class="icon el-icon-view" @click="toProject(item.projectId)"></i>
+              <i class="icon el-icon-edit" @click="editProject(item.projectId, item.projectName)"></i>
               <i class="icon el-icon-delete" @click="deleteProject(item.projectId)"></i>
             </div>
           </div>
@@ -72,6 +73,34 @@ export default {
         })
         .catch(() => {
           this.$message.error('新增失败')
+        })
+        /* eslint-enable */
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        })
+      })
+    },
+    editProject (id, name) {
+      this.$prompt('请输入项目名', '提示', {
+        confirmButtonText: '修改',
+        cancelButtonText: '取消',
+        inputValue: name,
+        inputPattern: /\S/,
+        inputErrorMessage: '项目名不能为空'
+      }).then(({ value }) => {
+        /* eslint-disable */
+        this.$store.dispatch('updateProject', {projectname: value,  projectid: id})
+        .then(() => {
+          this.$message({
+            type: 'success',
+            message: '修改成功'
+          })
+          this.$store.dispatch('getProjectList', {params: {userid: this.userInfo.userId}})
+        })
+        .catch(() => {
+          this.$message.error('修改失败')
         })
         /* eslint-enable */
       }).catch(() => {
@@ -193,7 +222,7 @@ export default {
               .icon {
                 font-size: 30px;
                 color: #fff;
-                &.el-icon-view {
+                &.el-icon-view, &.el-icon-edit {
                   margin-right: 20px;
                 }
               }

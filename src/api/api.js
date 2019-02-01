@@ -20,6 +20,7 @@ export const updatePwd = params => { return axios.post(`${base}/user/updatepwd`,
 export const getProject = params => { return axios.get(`${base}/project/list`, params).then(res => res.data) }
 export const getProjectCheck = params => { return axios.get(`${base}/project/querylist`, params).then(res => res.data) }
 export const addProject = params => { return axios.post(`${base}/project/add`, params).then(res => res.data) }
+export const updateProject = params => { return axios.post(`${base}/project/update`, params).then(res => res.data) }
 export const delProject = params => { return axios.delete(`${base}/project/delete`, params).then(res => res.data) }
 export const updateRelations = params => { return axios.post(`${base}/relation/update`, params).then(res => res.data) }
 // 标签相关
