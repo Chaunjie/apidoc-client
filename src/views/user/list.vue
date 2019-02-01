@@ -33,6 +33,7 @@
           <el-button
             size="mini"
             type="success"
+            v-if="userInfo.userId !== scope.row.userId"
             @click="addUser(scope.row)">编辑</el-button>
           <el-button
             size="mini"
@@ -41,6 +42,7 @@
           <el-button
             size="mini"
             type="danger"
+            v-if="userInfo.userId !== scope.row.userId"
             @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -49,7 +51,7 @@
     <el-dialog class="custom-dialog" title="编辑管理员" center :visible.sync="dialogFormVisible" v-if="userInfo.role === 1">
       <el-form :model="form">
         <el-form-item label="用户名称" :label-width="formLabelWidth">
-          <el-input class="form-input" v-model="form.username" autocomplete="off"></el-input>
+          <el-input class="form-input" v-model="form.username" :disabled="form.userid.length > 0" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="用户密码" :label-width="formLabelWidth">
           <el-input class="form-input" type="password" v-model="form.password" autocomplete="off"></el-input>
