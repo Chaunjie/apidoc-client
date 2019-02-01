@@ -66,7 +66,6 @@ export default new Vuex.Store({
         api.requestLogin(item).then(res => {
           if (res.code === 200) {
             util.setCookie('userInfo', res.data)
-            console.log(util.getCookie('userInfo'))
             resolve()
           } else {
             reject()

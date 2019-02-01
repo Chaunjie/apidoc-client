@@ -17,6 +17,6 @@ export default {
     return JSON.parse(obj)
   },
   removeCookie (key) {
-    Cookies.set(key, '', { path: '', expires: new Date() })
+    Cookies.remove(key)
   }
 }

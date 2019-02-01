@@ -47,7 +47,7 @@
           :placeholder="login.validateTip"
           name="code"
           auto-complete="on" />
-        <div v-html="checkInfo.img" class="code-view"></div>
+        <div v-html="checkInfo.img" class="code-view" @click="changeCode"></div>
       </el-form-item>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ login.logIn }}</el-button>
@@ -139,6 +139,16 @@ export default {
     this.$store.dispatch('getCheck').then(() => {}).catch(() => {})
   },
   methods: {
+    changeCode () {
+      this.$store.dispatch('getCheck').then(() => {
+        this.$message({
+          type: 'success',
+          message: '刷新成功'
+        })
+      }).catch(() => {
+        this.$message.error('刷新失败')
+      })
+    },
     showPwd () {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -277,6 +287,7 @@ export default {
   width: 150px;
   height: 44px;
   background-color: #fff;
+  cursor: pointer;
 }
 </style>
 <style lang="less">
