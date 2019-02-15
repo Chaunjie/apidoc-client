@@ -15,7 +15,7 @@
       </el-dropdown>
     </li>
     <li :class="['el-menu-item pull-right', isActive ? 'is-active' : '']" @click="handleSelect('add')">新增API</li>
-    <li :class="['el-menu-item pull-right', activePath === '/tag/list' ? 'is-active' : '']" @click="handleSelect('list')">标签列表</li>
+    <li :class="['el-menu-item pull-right', activePath === '/tag/list' ? 'is-active' : '']" @click="handleSelect('list')">分类列表</li>
   </ul>
 </template>
 <script>

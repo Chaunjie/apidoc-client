@@ -1,5 +1,7 @@
 import axios from 'axios'
 axios.defaults.withCredentials = true
+// axios.defaults.headers.sign = '6666'
+// axios.defaults.headers.get['Authorization'] = '8888'
 
 let base = ''
 if (process.env.NODE_ENV === 'production') {

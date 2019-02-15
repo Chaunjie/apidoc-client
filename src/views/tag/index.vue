@@ -14,7 +14,7 @@
       style="width: 100%"
       border>
       <el-table-column
-        label="用户ID"
+        label="分类ID"
         prop="id">
       </el-table-column>
       <el-table-column
@@ -130,7 +130,7 @@ export default {
       }
     },
     handleDelete (index, row) {
-      this.$confirm('此操作将删除该管理员, 是否继续?', '提示', {
+      this.$confirm('此操作将删除该分类, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
